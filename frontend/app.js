@@ -265,12 +265,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (simForm) {
         simForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const action = document.getElementById("sim-action").value;
-            const records = parseInt(document.getElementById("sim-records").value || "0");
-            const classification = document.getElementById("sim-classification").value;
-            const external = document.getElementById("sim-external").value === "true";
-            const prompt = document.getElementById("sim-prompt").value;
-
+            const payload = {
+                action: document.getElementById("sim-action").value,
+                record_count: parseInt(document.getElementById("sim-records").value) || 0,
+                external: document.getElementById("sim-external").value === "true",
+                email_id: document.getElementById("sim-email").value || "",
+                path: document.getElementById("sim-path").value || ""
+            };
             const outputPanel = document.getElementById("sim-output-content");
             outputPanel.innerHTML = '<div style="color: var(--accent-sky);"><i class="fa-solid fa-spinner fa-spin"></i> Evaluating policy engine & risk scoring algorithms...</div>';
 
@@ -280,11 +281,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     method: "POST",
                     headers: getAuthHeaders(),
                     body: JSON.stringify({
-                        action: action,
-                        record_count: records,
-                        classification: classification,
-                        external: external,
-                        prompt: prompt,
+                        action: payload.action,
+                        record_count: payload.record_count,
+                        external: payload.external,
+                        email_id: payload.email_id,
+                        path: payload.path,
                         agent_id: "simulation_agent"
                     })
                 });
@@ -324,35 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span class="sim-label">GOVERNANCE DECISION</span>
                         <div class="sim-decision-title"><span class="pill ${pillClass}">${decision}</span></div>
                     </div>
-                    <div style="text-align: right;">
-                        <span class="sim-label">RISK SCORE</span>
-                        <div class="sim-score-value">${riskScore}<span style="font-size: 0.9rem; opacity: 0.6;">/100</span> <span class="pill pill-${riskLevel}">${riskLevel}</span></div>
-                    </div>
                 </div>
-
-                <div class="sim-detail-block">
-                    <div class="sim-meta-item">
-                        <strong>Matched Policy:</strong> ${matchedPolicy}
-                    </div>
-                    <div class="sim-meta-item">
-                        <strong>Decision Reason:</strong> ${reason}
-                    </div>
-                    ${alternative ? `<div class="sim-meta-item text-accent"><strong>Suggested Alternative:</strong> ${alternative}</div>` : ""}
-                </div>
-
-                ${aiExplain ? `
-                    <div class="sim-ai-box">
-                        <div class="sim-ai-title"><i class="fa-solid fa-brain"></i> AI Natural Language Explainability</div>
-                        <p>${aiExplain}</p>
-                    </div>
-                ` : ""}
-
-                <details class="sim-trace-details">
-                    <summary><i class="fa-solid fa-list-ol"></i> Inspection Trace (${(result.trace || []).length} steps)</summary>
-                    <div class="sim-trace-list">
-                        ${(result.trace || []).map(t => `<div class="sim-trace-item">• ${t}</div>`).join("")}
-                    </div>
-                </details>
             </div>
         `;
     }

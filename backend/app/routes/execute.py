@@ -101,29 +101,28 @@ def execute_action(
     status = "COMPLETED"
     message = None
 
-    if result["risk_level"] in ("HIGH", "CRITICAL") or result.get("decision") == "block":
-        if result.get("decision") == "block":
-            status = "BLOCKED"
-            message = f"Action blocked by policy rule: {result.get('reason')}"
-            POLICY_VIOLATION_COUNTER.labels(
-                policy_id=str(result.get("matched_policy") or "0"),
-                action=action_req.action,
-                severity=result["risk_level"],
-            ).inc()
-        else:
-            approval = ApprovalRequest(
-                request_id=request_id,
-                action=action_req.action,
-                requested_by=current_user.id,
-                status="PENDING",
-                expires_at=datetime.now(timezone.utc) + timedelta(hours=24),
-            )
-            db.add(approval)
-            db.flush()
-            approval_request_id = approval.id
-            status = "PENDING_APPROVAL"
-            message = "High-risk action requires manager approval."
-            APPROVAL_COUNTER.labels(status="PENDING").inc()
+    if result.get("decision") == "block":
+        status = "BLOCKED"
+        message = f"Action blocked by policy rule: {result.get('reason')}"
+        POLICY_VIOLATION_COUNTER.labels(
+            policy_id=str(result.get("matched_policy") or "0"),
+            action=action_req.action,
+            severity=result["risk_level"],
+        ).inc()
+    elif result.get("decision") == "require_hitl":
+        approval = ApprovalRequest(
+            request_id=request_id,
+            action=action_req.action,
+            requested_by=current_user.id,
+            status="PENDING",
+            expires_at=datetime.now(timezone.utc) + timedelta(hours=24),
+        )
+        db.add(approval)
+        db.flush()
+        approval_request_id = approval.id
+        status = "PENDING_APPROVAL"
+        message = "High-risk action requires manager approval."
+        APPROVAL_COUNTER.labels(status="PENDING").inc()
 
     exec_time_ms = round((time.perf_counter() - start_time) * 1000, 2)
 

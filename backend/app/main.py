@@ -67,7 +67,7 @@ app.add_middleware(
 )
 
 # Initialize OpenTelemetry
-init_opentelemetry(app)
+# init_opentelemetry(app)
 
 # Register API Routers
 app.include_router(health_router)

@@ -7,103 +7,81 @@
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
+    <div class="ambient-background"></div>
     <div class="app-layout">
-        <!-- Sidebar Navigation -->
-        <aside class="sidebar">
-            <div class="brand-container">
-                <div class="brand-logo">
-                    <i class="fa-solid fa-shield-halved text-accent"></i>
-                </div>
-                <div class="brand-text">
-                    <span class="brand-title">GuardAI</span>
-                    <span class="brand-subtitle"><i class="fa-solid fa-bolt"></i> ENTERPRISE v2.4</span>
-                </div>
-            </div>
-
-            <nav class="nav-menu">
-                <div class="nav-section-label">MONITORING & GOVERNANCE</div>
-                <button class="nav-item active" data-tab="overview">
-                    <div class="nav-indicator"></div>
-                    <i class="fa-solid fa-chart-pie nav-icon"></i>
-                    <span class="nav-text">Overview Dashboard</span>
-                </button>
-                <button class="nav-item" data-tab="approvals">
-                    <div class="nav-indicator"></div>
-                    <i class="fa-solid fa-user-check nav-icon"></i>
-                    <span class="nav-text">Pending Approvals</span>
-                    <span class="badge" id="pending-badge">0</span>
-                </button>
-
-                <div class="nav-section-label">POLICY CONTROLS</div>
-                <button class="nav-item" data-tab="policies">
-                    <div class="nav-indicator"></div>
-                    <i class="fa-solid fa-list-check nav-icon"></i>
-                    <span class="nav-text">Policy Rules</span>
-                </button>
-
-                <div class="nav-section-label">ANALYTICS & COMPLIANCE</div>
-                <button class="nav-item" data-tab="audit">
-                    <div class="nav-indicator"></div>
-                    <i class="fa-solid fa-table-list nav-icon"></i>
-                    <span class="nav-text">Audit Log Trail</span>
-                </button>
-                <button class="nav-item" data-tab="costs">
-                    <div class="nav-indicator"></div>
-                    <i class="fa-solid fa-coins nav-icon"></i>
-                    <span class="nav-text">Token & Cost Analytics</span>
-                </button>
-            </nav>
-
-            <div class="sidebar-footer">
-                <div class="system-status-indicator">
-                    <span class="status-pulse-dot" id="sys-status-dot"></span>
-                    <span class="status-label-text" id="sys-status-text">System Healthy</span>
-                </div>
-                <div class="user-profile-chip">
-                    <div class="user-avatar-wrap">
-                        <i class="fa-solid fa-user-shield" id="user-avatar-icon"></i>
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="nav-container">
+                <div class="brand-container">
+                    <div class="brand-logo">
+                        <i class="fa-solid fa-shield-halved"></i>
                     </div>
-                    <div class="user-info">
-                        <select id="user-switcher-select" class="user-switch-select" onchange="switchActiveUser(this.value)" title="Change User / Role Persona">
+                    <div class="brand-text">
+                        <span class="brand-title">GuardAI</span>
+                        <span class="brand-subtitle">ENTERPRISE v2.5</span>
+                    </div>
+                </div>
+
+                <div class="nav-links">
+                    <button class="nav-item active" data-tab="overview">
+                        <i class="fa-solid fa-chart-pie nav-icon"></i> Dashboard
+                    </button>
+                    <button class="nav-item" data-tab="approvals">
+                        <i class="fa-solid fa-user-check nav-icon"></i> Approvals
+                        <span class="badge" id="pending-badge">0</span>
+                    </button>
+                    <button class="nav-item" data-tab="policies">
+                        <i class="fa-solid fa-list-check nav-icon"></i> Policies
+                    </button>
+                    <button class="nav-item" data-tab="audit">
+                        <i class="fa-solid fa-table-list nav-icon"></i> Audit Log
+                    </button>
+                    <button class="nav-item" data-tab="costs">
+                        <i class="fa-solid fa-coins nav-icon"></i> Analytics
+                    </button>
+                </div>
+
+                <div class="nav-actions">
+                    <div class="system-status-indicator">
+                        <span class="status-pulse-dot" id="sys-status-dot"></span>
+                        <span class="status-label-text" id="sys-status-text">System Healthy</span>
+                    </div>
+                    <div class="user-profile">
+                        <select id="user-switcher-select" class="user-switch-select" onchange="switchActiveUser(this.value)">
                             <option value="admin">Admin User (ADMIN)</option>
                             <option value="manager_jane">Manager Jane (MANAGER)</option>
                             <option value="dev_alex">Dev Alex (EMPLOYEE)</option>
                             <option value="auditor_bob">Auditor Bob (AUDITOR)</option>
                         </select>
-                        <span class="user-role-tag" id="user-role-tag">ENTERPRISE ADMIN</span>
+                        <span id="user-role-tag" style="display:none;"></span>
                     </div>
                 </div>
             </div>
-        </aside>
+        </nav>
 
         <!-- Main Workspace -->
         <main class="main-content">
-            <!-- Top App Header -->
-            <header class="top-header">
-                <!-- Search Bar -->
+            <!-- Header Utility Bar -->
+            <header class="workspace-header">
                 <div class="global-search-container">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" class="global-search-input" placeholder="Search policies, agents, logs, rules (Press '/' to focus)..." id="global-search-input">
+                    <input type="text" class="global-search-input" placeholder="Search policies, agents, logs..." id="global-search-input">
                     <span class="search-shortcut-badge">⌘K</span>
                 </div>
-
-                <div class="top-header-right">
+                <div class="header-actions">
                     <div class="env-badge">
-                        <span class="env-dot"></span>
-                        <span>PROD CLUSTER</span>
+                        <span class="env-dot"></span> PROD CLUSTER
                     </div>
-
                     <button class="btn btn-outline btn-sm" id="btn-refresh">
                         <i class="fa-solid fa-rotate-right"></i> Refresh
                     </button>
-
                     <button class="btn btn-subtle btn-sm" id="btn-api-docs" onclick="window.open('http://localhost:8000/docs', '_blank')">
                         <i class="fa-solid fa-code"></i> API Docs
                     </button>
@@ -112,61 +90,21 @@
 
             <!-- Page Title Banner -->
             <div class="page-title-banner">
-                <div class="title-group">
-                    <h1 id="page-title">Enterprise AI Governance Dashboard</h1>
+                <div class="title-content">
+                    <h1 id="page-title">GuardAI - Intelligent Action Governance Platform</h1>
                     <p class="subtitle">Real-time Policy Enforcement, Autonomous Risk Scoring & Multi-Agent Gatekeeper</p>
-                </div>
-                <div class="header-pills">
-                    <span class="pill pill-latency"><i class="fa-solid fa-bolt"></i> Sub-20ms Engine Latency</span>
-                    <span class="pill pill-guard"><i class="fa-solid fa-shield"></i> Active Multi-Agent Guard</span>
                 </div>
             </div>
 
             <!-- TAB 1: OVERVIEW DASHBOARD -->
             <section id="tab-overview" class="tab-content active">
-                <!-- System KPI Cards -->
-                <div class="kpi-grid">
-                    <div class="kpi-card glass">
-                        <div class="kpi-header">
-                            <span>TOTAL AI REQUESTS</span>
-                            <i class="fa-solid fa-bolt kpi-icon blue"></i>
-                        </div>
-                        <div class="kpi-value" id="kpi-total-requests">0</div>
-                        <div class="kpi-footer text-muted"><i class="fa-solid fa-arrow-trend-up"></i> Live Gatekeeper Interceptions</div>
-                    </div>
-
-                    <div class="kpi-card glass">
-                        <div class="kpi-header">
-                            <span>BLOCKED VIOLATIONS</span>
-                            <i class="fa-solid fa-ban kpi-icon red"></i>
-                        </div>
-                        <div class="kpi-value" id="kpi-blocked-actions">0</div>
-                        <div class="kpi-footer text-danger"><i class="fa-solid fa-shield-virus"></i> High-risk policy blocks</div>
-                    </div>
-
-                    <div class="kpi-card glass">
-                        <div class="kpi-header">
-                            <span>PENDING APPROVALS</span>
-                            <i class="fa-solid fa-clock-rotate-left kpi-icon orange"></i>
-                        </div>
-                        <div class="kpi-value" id="kpi-pending-approvals">0</div>
-                        <div class="kpi-footer text-warning">Requires Manager Signoff</div>
-                    </div>
-
-                    <div class="kpi-card glass">
-                        <div class="kpi-header">
-                            <span>AVG LATENCY</span>
-                            <i class="fa-solid fa-gauge-high kpi-icon green"></i>
-                        </div>
-                        <div class="kpi-value" id="kpi-avg-latency">0 ms</div>
-                        <div class="kpi-footer text-success"><i class="fa-solid fa-bolt-lightning"></i> Sub-20ms policy engine</div>
-                    </div>
-                </div>
-
+                
                 <!-- EMBEDDED POLICY SIMULATOR -->
-                <div class="grid-2col margin-top margin-bottom">
-                    <div class="section-card glass">
-                        <h3><i class="fa-solid fa-vial-circle-check text-accent"></i> Policy & Risk Simulator</h3>
+                <div class="grid-2col margin-bottom">
+                    <div class="glass-card simulator-card">
+                        <div class="card-header-fancy">
+                            <h3><i class="fa-solid fa-vial-circle-check"></i> Policy & Risk Simulator</h3>
+                        </div>
                         <p class="section-desc">Test how policies and risk algorithms react to an agent action payload in real-time.</p>
 
                         <form id="simulator-form" class="form-grid">
@@ -174,26 +112,14 @@
                                 <label>Action Type</label>
                                 <select id="sim-action" class="form-input">
                                     <option value="delete_database">delete_database (Destructive DB drop)</option>
-                                    <option value="export_records">export_records (Bulk customer export)</option>
-                                    <option value="deploy_prod">deploy_prod (Production deployment)</option>
-                                    <option value="api_request">api_request (External API payload)</option>
                                     <option value="read_file">read_file (Local file read)</option>
+                                    <option value="send_email">send_email (Send email)</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label>Record Count</label>
                                 <input type="number" id="sim-records" class="form-input" value="150" min="0">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Classification</label>
-                                <select id="sim-classification" class="form-input">
-                                    <option value="auto" selected>✨ Auto-Detect via AI Engine</option>
-                                    <option value="confidential">confidential (Sensitive)</option>
-                                    <option value="restricted">restricted (Internal)</option>
-                                    <option value="public">public (Unrestricted)</option>
-                                </select>
                             </div>
 
                             <div class="form-group">
@@ -204,12 +130,17 @@
                                 </select>
                             </div>
 
-                            <div class="form-group full-width">
-                                <label>Agent Prompt Payload</label>
-                                <textarea id="sim-prompt" class="form-input" rows="2" placeholder="Enter prompt to scan for injections or PII..."></textarea>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="text" id="sim-email" class="form-input" placeholder="e.g. user@company.com">
                             </div>
 
-                            <div class="full-width">
+                            <div class="form-group full-width">
+                                <label>File Path</label>
+                                <input type="text" id="sim-path" class="form-input" placeholder="e.g. /data/confidential_report.pdf">
+                            </div>
+
+                            <div class="full-width margin-top-sm">
                                 <button type="submit" class="btn btn-primary btn-block">
                                     <i class="fa-solid fa-microchip"></i> Run Simulation
                                 </button>
@@ -217,37 +148,24 @@
                         </form>
                     </div>
 
-                    <div class="section-card glass" id="simulator-result-card">
-                        <h3><i class="fa-solid fa-square-poll-vertical"></i> Simulation Execution Result</h3>
+                    <div class="glass-card result-card" id="simulator-result-card">
+                        <div class="card-header-fancy">
+                            <h3><i class="fa-solid fa-square-poll-vertical"></i> Simulation Execution Result</h3>
+                        </div>
                         <p class="section-desc">Real-time governance verdict, risk breakdown, and decision output.</p>
-                        <div id="sim-output-content">
+                        
+                        <div id="sim-output-content" class="sim-output-wrapper">
                             <div class="empty-state">
-                                <i class="fa-solid fa-vial" style="font-size: 2rem; margin-bottom: 0.5rem; display: block; opacity: 0.5;"></i>
-                                Run a simulation to evaluate action payloads against live policies.
+                                <i class="fa-solid fa-vial"></i>
+                                <p>Run a simulation to evaluate action payloads against live policies.</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Charts Section -->
-                <div class="charts-grid">
-                    <div class="chart-card glass">
-                        <h3><i class="fa-solid fa-chart-simple"></i> Governance Policy Violations</h3>
-                        <div class="chart-wrapper">
-                            <canvas id="violationChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="chart-card glass">
-                        <h3><i class="fa-solid fa-chart-line"></i> Latency & Request Throughput</h3>
-                        <div class="chart-wrapper">
-                            <canvas id="latencyChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Recent Live Audit Trail -->
-                <div class="section-card glass margin-top">
-                    <div class="card-header">
+                <div class="glass-card">
+                    <div class="card-header-fancy split">
                         <h3><i class="fa-solid fa-stream"></i> Real-time AI Action Interception Stream</h3>
                         <span class="live-tag"><i class="fa-solid fa-circle blink"></i> LIVE WEBSOCKET</span>
                     </div>
@@ -273,12 +191,11 @@
 
             <!-- TAB 2: PENDING APPROVALS -->
             <section id="tab-approvals" class="tab-content">
-                <div class="section-card glass">
-                    <div class="card-header">
+                <div class="glass-card">
+                    <div class="card-header-fancy">
                         <h3><i class="fa-solid fa-user-shield"></i> Manager Approval Queue</h3>
-                        <p class="section-desc">High-risk AI actions requiring human-in-the-loop validation before execution</p>
                     </div>
-
+                    <p class="section-desc">High-risk AI actions requiring human-in-the-loop validation before execution</p>
                     <div id="approvals-container" class="approvals-grid">
                         <div class="empty-state">No pending approvals at this time.</div>
                     </div>
@@ -287,8 +204,8 @@
 
             <!-- TAB 3: POLICY RULES -->
             <section id="tab-policies" class="tab-content">
-                <div class="section-card glass">
-                    <div class="card-header">
+                <div class="glass-card">
+                    <div class="card-header-fancy">
                         <h3><i class="fa-solid fa-list-check"></i> Configured Enterprise Policies</h3>
                     </div>
                     <div class="table-responsive">
@@ -315,8 +232,8 @@
 
             <!-- TAB 4: AUDIT LOG TRAIL -->
             <section id="tab-audit" class="tab-content">
-                <div class="section-card glass">
-                    <div class="card-header">
+                <div class="glass-card">
+                    <div class="card-header-fancy split">
                         <h3><i class="fa-solid fa-file-shield"></i> Complete Governance Audit Log Trail</h3>
                         <button class="btn btn-outline btn-sm" id="btn-export-csv"><i class="fa-solid fa-download"></i> Export CSV</button>
                     </div>
@@ -345,18 +262,20 @@
             <!-- TAB 5: TOKEN & COST ANALYTICS -->
             <section id="tab-costs" class="tab-content">
                 <div class="kpi-grid margin-bottom">
-                    <div class="kpi-card glass">
+                    <div class="kpi-card glass-card">
                         <div class="kpi-header">TOTAL TOKENS CONSUMED</div>
                         <div class="kpi-value text-accent" id="cost-total-tokens">0</div>
                     </div>
-                    <div class="kpi-card glass">
+                    <div class="kpi-card glass-card">
                         <div class="kpi-header">TOTAL ESTIMATED COST (USD)</div>
                         <div class="kpi-value text-success" id="cost-total-usd">$0.0000</div>
                     </div>
                 </div>
 
-                <div class="section-card glass">
-                    <h3><i class="fa-solid fa-chart-pie"></i> Provider Cost Breakdown</h3>
+                <div class="glass-card">
+                    <div class="card-header-fancy">
+                        <h3><i class="fa-solid fa-chart-pie"></i> Provider Cost Breakdown</h3>
+                    </div>
                     <div class="table-responsive">
                         <table class="data-table">
                             <thead>

@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Union
 
 
 class SimulationRequest(BaseModel):
@@ -7,6 +7,8 @@ class SimulationRequest(BaseModel):
     record_count: int = 0
     external: bool = False
     classification: Optional[str] = None
+    path: Optional[str] = None
+    email_id: Optional[str] = None
 
 
 class SimulationResponse(BaseModel):
@@ -15,7 +17,7 @@ class SimulationResponse(BaseModel):
     decision: str
     reason: str
 
-    matched_policy: int | None
+    matched_policy: Union[int, str, None] = None
 
     risk_score: int
     risk_level: str

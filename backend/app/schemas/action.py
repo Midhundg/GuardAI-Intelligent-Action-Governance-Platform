@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Union
 
 
 class ActionRequest(BaseModel):
@@ -8,6 +8,8 @@ class ActionRequest(BaseModel):
     external: bool = Field(default=False)
     classification: Optional[str] = Field(default=None)
     prompt: Optional[str] = Field(default=None, json_schema_extra={"example": "Clean old data records from server"})
+    email_id: Optional[str] = Field(default=None, json_schema_extra={"example": "user@company.com"})
+    path: Optional[str] = Field(default=None, json_schema_extra={"example": "/var/log/syslog"})
     agent_id: Optional[str] = Field(default="coding_agent", json_schema_extra={"example": "devops_agent"})
     model_name: Optional[str] = Field(default="gpt-4o-mini", json_schema_extra={"example": "gpt-4o-mini"})
 
@@ -16,7 +18,7 @@ class PolicyDecision(BaseModel):
     decision: str
     reason: str
 
-    matched_policy: Optional[int] = None
+    matched_policy: Union[int, str, None] = None
     matched_policy_name: Optional[str] = None
     suggested_alternative: Optional[str] = None
 
