@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const tabTitles = {
         overview: "Enterprise AI Governance Dashboard",
         approvals: "Manager Approval Queue",
-        simulator: "Policy & Risk Simulator",
         policies: "Configured Enterprise Policies",
         audit: "Complete Governance Audit Log Trail",
         costs: "Token & Cost Analytics"
@@ -26,7 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const tabSubtitles = {
         overview: "Real-time Policy Enforcement, Autonomous Risk Scoring & Multi-Agent Gatekeeper",
         approvals: "High-risk AI actions requiring human-in-the-loop validation before execution",
-        simulator: "Test how policies and risk algorithms react to agent action payloads in real-time",
         policies: "Manage declarative security constraints, threshold rules, and enforcement actions",
         audit: "Complete historical audit log of every evaluated action, risk score, and matched rule",
         costs: "Track LLM token consumption, cost metrics, and provider usage trends"
@@ -125,34 +123,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // ----------------------------------------------------
     async function loadDashboardData() {
         try {
-            // Health badges
-            const hRes = await fetch(`${API_BASE}/health`, { headers: getAuthHeaders() });
-            if (hRes.ok) {
-                const hData = await hRes.json();
-                const deps = hData.dependencies || {};
-                document.getElementById("health-db").textContent = (deps.database || "connected").toUpperCase();
-                document.getElementById("health-redis").textContent = (deps.redis || "connected").toUpperCase();
-                document.getElementById("health-llm").textContent = (deps.llm_provider || "configured").toUpperCase();
-                document.getElementById("health-queue").textContent = (deps.queue || "online").toUpperCase();
-            }
-
             const res = await fetch(`${API_BASE}/analytics/dashboard`, { headers: getAuthHeaders() });
             if (res.ok) {
                 const data = await res.json();
 
-                document.getElementById("kpi-total-requests").textContent = data.total_requests || 0;
-                document.getElementById("kpi-blocked-actions").textContent = data.blocked_actions || 0;
-                document.getElementById("kpi-pending-approvals").textContent = data.pending_approvals || 0;
-                document.getElementById("pending-badge").textContent = data.pending_approvals || 0;
-                document.getElementById("kpi-avg-latency").textContent = `${data.average_latency_ms || 12.5} ms`;
-            }
-
-            // Risk distribution
-            const riskRes = await fetch(`${API_BASE}/audit/risk-distribution`, { headers: getAuthHeaders() });
-            if (riskRes.ok) {
-                const riskDist = await riskRes.json();
-                updateRiskChart(riskDist);
-                updateRiskHeatmap(riskDist);
+                if (document.getElementById("kpi-total-requests")) document.getElementById("kpi-total-requests").textContent = data.total_requests || 0;
+                if (document.getElementById("kpi-blocked-actions")) document.getElementById("kpi-blocked-actions").textContent = data.blocked_actions || 0;
+                if (document.getElementById("kpi-pending-approvals")) document.getElementById("kpi-pending-approvals").textContent = data.pending_approvals || 0;
+                if (document.getElementById("pending-badge")) document.getElementById("pending-badge").textContent = data.pending_approvals || 0;
+                if (document.getElementById("kpi-avg-latency")) document.getElementById("kpi-avg-latency").textContent = `${data.average_latency_ms || 12.5} ms`;
             }
 
             // Violations
@@ -484,21 +463,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Chart Initialization
     // ----------------------------------------------------
     function initCharts() {
-        const ctxRisk = document.getElementById("riskChart");
-        if (ctxRisk) {
-            riskChart = new Chart(ctxRisk, {
-                type: "doughnut",
-                data: {
-                    labels: ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
-                    datasets: [{
-                        data: [10, 4, 2, 1],
-                        backgroundColor: ["#10b981", "#06b6d4", "#f59e0b", "#f43f5e"]
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: "#9ca3af" } } } }
-            });
-        }
-
         const ctxViol = document.getElementById("violationChart");
         if (ctxViol) {
             violationChart = new Chart(ctxViol, {
@@ -531,24 +495,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 options: { responsive: true, maintainAspectRatio: false, scales: { x: { ticks: { color: "#9ca3af" } }, y: { ticks: { color: "#9ca3af" } } } }
             });
         }
-    }
-
-    function updateRiskChart(dist) {
-        if (!riskChart) return;
-        riskChart.data.datasets[0].data = [
-            dist.LOW || 0,
-            dist.MEDIUM || 0,
-            dist.HIGH || 0,
-            dist.CRITICAL || 0
-        ];
-        riskChart.update();
-    }
-
-    function updateRiskHeatmap(dist) {
-        if (document.getElementById("hm-low")) document.getElementById("hm-low").textContent = dist.LOW || 0;
-        if (document.getElementById("hm-med")) document.getElementById("hm-med").textContent = dist.MEDIUM || 0;
-        if (document.getElementById("hm-high")) document.getElementById("hm-high").textContent = dist.HIGH || 0;
-        if (document.getElementById("hm-crit")) document.getElementById("hm-crit").textContent = dist.CRITICAL || 0;
     }
 
     function updateViolationChart(violations) {
@@ -614,96 +560,6 @@ document.addEventListener("DOMContentLoaded", () => {
         loadPolicies();
     });
 
-    // ----------------------------------------------------
-    // Notification & Modal Handlers (Global Window Scope)
-    // ----------------------------------------------------
-    window.toggleNotifications = function(e) {
-        if (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        const notifDropdown = document.getElementById("notification-dropdown");
-        if (notifDropdown) {
-            notifDropdown.classList.toggle("active");
-        }
-    };
-
-    window.openNewPolicyModal = function(e) {
-        if (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        const modalNewPolicy = document.getElementById("modal-new-policy");
-        if (modalNewPolicy) {
-            modalNewPolicy.classList.add("active");
-        }
-    };
-
-    window.closeNewPolicyModal = function(e) {
-        if (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        const modalNewPolicy = document.getElementById("modal-new-policy");
-        if (modalNewPolicy) {
-            modalNewPolicy.classList.remove("active");
-        }
-    };
-
-    document.addEventListener("click", (e) => {
-        const notifDropdown = document.getElementById("notification-dropdown");
-        const notifBtn = document.getElementById("btn-notifications");
-        if (notifDropdown && notifBtn && !notifDropdown.contains(e.target) && !notifBtn.contains(e.target)) {
-            notifDropdown.classList.remove("active");
-        }
-    });
-
-    const formNewPolicy = document.getElementById("form-new-policy");
-    if (formNewPolicy) {
-        formNewPolicy.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const name = document.getElementById("pol-name").value;
-            const action = document.getElementById("pol-action").value;
-            const conditionType = document.getElementById("pol-condition-type").value;
-            const conditionValue = document.getElementById("pol-condition-value").value;
-            const decision = document.getElementById("pol-decision").value;
-            const severity = document.getElementById("pol-severity").value;
-            const requiresApproval = document.getElementById("pol-approval-check").checked;
-
-            try {
-                if (!authToken) await loginDefaultAdmin();
-                const res = await fetch(`${API_BASE}/policies/`, {
-                    method: "POST",
-                    headers: getAuthHeaders(),
-                    body: JSON.stringify({
-                        name: name,
-                        description: `Created via Dashboard GUI by Admin`,
-                        action: action,
-                        condition_type: conditionType,
-                        condition_value: conditionValue,
-                        decision: decision,
-                        severity: severity,
-                        enabled: true,
-                        requires_approval: requiresApproval
-                    })
-                });
-
-                if (res.ok) {
-                    modalNewPolicy?.classList.remove("active");
-                    formNewPolicy.reset();
-                    // Switch to policies tab and reload
-                    document.querySelector('[data-tab="policies"]')?.click();
-                    loadPolicies();
-                    alert(`Policy '${name}' created successfully!`);
-                } else {
-                    const err = await res.json();
-                    alert(`Failed to create policy: ${err.detail || JSON.stringify(err)}`);
-                }
-            } catch (err) {
-                alert(`Error connecting to backend server: ${err.message}`);
-            }
-        });
-    }
-
+    // Initialize application
     init();
 });

@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GuardAI Enterprise - Intelligent AI Action Governance Platform</title>
-    <!-- Google Fonts -->
+    <title>GuardAI Enterprise - AI Action Governance Platform</title>
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome & Chart.js -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="dark-theme">
+<body>
     <div class="app-layout">
-        <!-- Google Cloud Style Sidebar Navigation -->
+        <!-- Sidebar Navigation -->
         <aside class="sidebar">
-            <div class="brand">
-                <div class="logo-icon">
-                    <i class="fa-solid fa-shield-halved"></i>
+            <div class="brand-container">
+                <div class="brand-logo">
+                    <i class="fa-solid fa-shield-halved text-accent"></i>
                 </div>
                 <div class="brand-text">
-                    <h2>GuardAI</h2>
-                    <span class="version-tag"><i class="fa-solid fa-bolt"></i> ENTERPRISE v2.4</span>
+                    <span class="brand-title">GuardAI</span>
+                    <span class="brand-subtitle"><i class="fa-solid fa-bolt"></i> ENTERPRISE v2.4</span>
                 </div>
             </div>
 
@@ -42,11 +42,6 @@
                 </button>
 
                 <div class="nav-section-label">POLICY CONTROLS</div>
-                <button class="nav-item" data-tab="simulator">
-                    <div class="nav-indicator"></div>
-                    <i class="fa-solid fa-vial-circle-check nav-icon"></i>
-                    <span class="nav-text">Policy Simulator</span>
-                </button>
                 <button class="nav-item" data-tab="policies">
                     <div class="nav-indicator"></div>
                     <i class="fa-solid fa-list-check nav-icon"></i>
@@ -90,7 +85,7 @@
 
         <!-- Main Workspace -->
         <main class="main-content">
-            <!-- Google Level Top Header Bar -->
+            <!-- Top App Header -->
             <header class="top-header">
                 <!-- Search Bar -->
                 <div class="global-search-container">
@@ -104,15 +99,6 @@
                         <span class="env-dot"></span>
                         <span>PROD CLUSTER</span>
                     </div>
-                    
-                    <button class="icon-btn-header" id="btn-notifications" title="Notifications" onclick="toggleNotifications(event)">
-                        <i class="fa-regular fa-bell"></i>
-                        <span class="notification-count-dot" id="notif-count-badge">3</span>
-                    </button>
-
-                    <button class="btn btn-primary btn-sm" id="btn-quick-policy" onclick="openNewPolicyModal()">
-                        <i class="fa-solid fa-plus"></i> New Policy
-                    </button>
 
                     <button class="btn btn-outline btn-sm" id="btn-refresh">
                         <i class="fa-solid fa-rotate-right"></i> Refresh
@@ -126,51 +112,19 @@
 
             <!-- Page Title Banner -->
             <div class="page-title-banner">
-                <div class="page-title-text">
+                <div class="title-group">
                     <h1 id="page-title">Enterprise AI Governance Dashboard</h1>
                     <p class="subtitle">Real-time Policy Enforcement, Autonomous Risk Scoring & Multi-Agent Gatekeeper</p>
                 </div>
-                <div class="banner-meta">
-                    <span class="meta-pill"><i class="fa-solid fa-bolt-lightning text-accent"></i> Sub-20ms Engine Latency</span>
-                    <span class="meta-pill"><i class="fa-solid fa-shield-virus text-emerald"></i> Active Multi-Agent Guard</span>
+                <div class="header-pills">
+                    <span class="pill pill-latency"><i class="fa-solid fa-bolt"></i> Sub-20ms Engine Latency</span>
+                    <span class="pill pill-guard"><i class="fa-solid fa-shield"></i> Active Multi-Agent Guard</span>
                 </div>
             </div>
 
-            <!-- TAB 1: OVERVIEW -->
+            <!-- TAB 1: OVERVIEW DASHBOARD -->
             <section id="tab-overview" class="tab-content active">
-                <!-- Dependency Health Status Cards -->
-                <div class="health-grid margin-bottom">
-                    <div class="health-card glass">
-                        <i class="fa-solid fa-database health-icon"></i>
-                        <div class="health-info">
-                            <span class="health-label">Database</span>
-                            <span class="health-badge status-connected" id="health-db">CONNECTED</span>
-                        </div>
-                    </div>
-                    <div class="health-card glass">
-                        <i class="fa-solid fa-server health-icon"></i>
-                        <div class="health-info">
-                            <span class="health-label">Redis Cache</span>
-                            <span class="health-badge status-connected" id="health-redis">ACTIVE</span>
-                        </div>
-                    </div>
-                    <div class="health-card glass">
-                        <i class="fa-solid fa-brain health-icon"></i>
-                        <div class="health-info">
-                            <span class="health-label">LLM Provider</span>
-                            <span class="health-badge status-connected" id="health-llm">CONFIGURED</span>
-                        </div>
-                    </div>
-                    <div class="health-card glass">
-                        <i class="fa-solid fa-list-check health-icon"></i>
-                        <div class="health-info">
-                            <span class="health-label">Celery Queue</span>
-                            <span class="health-badge status-connected" id="health-queue">ONLINE</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- System Health Cards -->
+                <!-- System KPI Cards -->
                 <div class="kpi-grid">
                     <div class="kpi-card glass">
                         <div class="kpi-header">
@@ -209,23 +163,79 @@
                     </div>
                 </div>
 
-                <!-- Charts Section -->
-                <div class="charts-grid">
-                    <div class="chart-card glass">
-                        <h3><i class="fa-solid fa-shield-cat"></i> Risk Distribution Breakdown</h3>
-                        <div class="chart-wrapper">
-                            <canvas id="riskChart"></canvas>
+                <!-- EMBEDDED POLICY SIMULATOR -->
+                <div class="grid-2col margin-top margin-bottom">
+                    <div class="section-card glass">
+                        <h3><i class="fa-solid fa-vial-circle-check text-accent"></i> Policy & Risk Simulator</h3>
+                        <p class="section-desc">Test how policies and risk algorithms react to an agent action payload in real-time.</p>
+
+                        <form id="simulator-form" class="form-grid">
+                            <div class="form-group">
+                                <label>Action Type</label>
+                                <select id="sim-action" class="form-input">
+                                    <option value="delete_database">delete_database (Destructive DB drop)</option>
+                                    <option value="export_records">export_records (Bulk customer export)</option>
+                                    <option value="deploy_prod">deploy_prod (Production deployment)</option>
+                                    <option value="api_request">api_request (External API payload)</option>
+                                    <option value="read_file">read_file (Local file read)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Record Count</label>
+                                <input type="number" id="sim-records" class="form-input" value="150" min="0">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Classification</label>
+                                <select id="sim-classification" class="form-input">
+                                    <option value="confidential">confidential</option>
+                                    <option value="restricted">restricted</option>
+                                    <option value="public">public</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>External Network</label>
+                                <select id="sim-external" class="form-input">
+                                    <option value="true">True (External domain)</option>
+                                    <option value="false">False (Internal cluster)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label>Agent Prompt Payload</label>
+                                <textarea id="sim-prompt" class="form-input" rows="2" placeholder="Enter prompt to scan for injections or PII..."></textarea>
+                            </div>
+
+                            <div class="full-width">
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <i class="fa-solid fa-microchip"></i> Run Simulation
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="section-card glass" id="simulator-result-card">
+                        <h3><i class="fa-solid fa-square-poll-vertical"></i> Simulation Execution Result</h3>
+                        <p class="section-desc">Real-time governance verdict, risk breakdown, and decision output.</p>
+                        <div id="sim-output-content">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-vial" style="font-size: 2rem; margin-bottom: 0.5rem; display: block; opacity: 0.5;"></i>
+                                Run a simulation to evaluate action payloads against live policies.
+                            </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-grid">
                     <div class="chart-card glass">
                         <h3><i class="fa-solid fa-chart-simple"></i> Governance Policy Violations</h3>
                         <div class="chart-wrapper">
                             <canvas id="violationChart"></canvas>
                         </div>
                     </div>
-                </div>
-
-                <div class="charts-grid margin-top">
                     <div class="chart-card glass">
                         <h3><i class="fa-solid fa-chart-line"></i> Latency & Request Throughput</h3>
                         <div class="chart-wrapper">
@@ -235,7 +245,7 @@
                 </div>
 
                 <!-- Recent Live Audit Trail -->
-                <div class="section-card glass">
+                <div class="section-card glass margin-top">
                     <div class="card-header">
                         <h3><i class="fa-solid fa-stream"></i> Real-time AI Action Interception Stream</h3>
                         <span class="live-tag"><i class="fa-solid fa-circle blink"></i> LIVE WEBSOCKET</span>
@@ -274,76 +284,11 @@
                 </div>
             </section>
 
-            <!-- TAB 3: POLICY SIMULATOR -->
-            <section id="tab-simulator" class="tab-content">
-                <div class="grid-2col">
-                    <div class="section-card glass">
-                        <h3><i class="fa-solid fa-play"></i> "What If?" Action Simulator</h3>
-                        <p class="section-desc">Test how policies and risk algorithms react to an agent action payload without executing real commands.</p>
-
-                        <form id="simulator-form" class="form-grid">
-                            <div class="form-group">
-                                <label>Action Type</label>
-                                <select id="sim-action" class="form-input">
-                                    <option value="delete_database">delete_database (Destructive DB drop)</option>
-                                    <option value="export_records">export_records (Bulk customer export)</option>
-                                    <option value="deploy_prod">deploy_prod (Production deployment)</option>
-                                    <option value="api_request">api_request (External API payload)</option>
-                                    <option value="read_file">read_file (Local file read)</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Record Count</label>
-                                <input type="number" id="sim-records" class="form-input" value="150" min="0">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Classification</label>
-                                <select id="sim-classification" class="form-input">
-                                    <option value="confidential">confidential</option>
-                                    <option value="restricted">restricted</option>
-                                    <option value="public">public</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label>External Network</label>
-                                <select id="sim-external" class="form-input">
-                                    <option value="true">True (External domain)</option>
-                                    <option value="false">False (Internal cluster)</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group full-width">
-                                <label>Agent Prompt Payload</label>
-                                <textarea id="sim-prompt" class="form-input" rows="3" placeholder="Enter prompt to scan for injections or PII..."></textarea>
-                            </div>
-
-                            <div class="full-width">
-                                <button type="submit" class="btn btn-primary btn-block">
-                                    <i class="fa-solid fa-microchip"></i> Run Simulation
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- Simulator Output -->
-                    <div class="section-card glass" id="sim-result-card">
-                        <h3><i class="fa-solid fa-clipboard-check"></i> Simulation Decision & Explainability</h3>
-                        <div id="sim-output-content" class="output-panel">
-                            <div class="placeholder-text">Run a simulation payload to inspect decision explainability.</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- TAB 4: POLICY RULES -->
+            <!-- TAB 3: POLICY RULES -->
             <section id="tab-policies" class="tab-content">
                 <div class="section-card glass">
                     <div class="card-header">
                         <h3><i class="fa-solid fa-list-check"></i> Configured Enterprise Policies</h3>
-                        <button class="btn btn-primary" id="btn-add-policy" onclick="openNewPolicyModal()"><i class="fa-solid fa-plus"></i> Add New Policy</button>
                     </div>
                     <div class="table-responsive">
                         <table class="data-table">
@@ -352,7 +297,7 @@
                                     <th>ID</th>
                                     <th>POLICY NAME</th>
                                     <th>ACTION</th>
-                                    <th>CONDITION</th>
+                                    <th>CONDITION TYPE</th>
                                     <th>VALUE</th>
                                     <th>DECISION</th>
                                     <th>SEVERITY</th>
@@ -360,21 +305,19 @@
                                 </tr>
                             </thead>
                             <tbody id="policies-table-body">
-                                <tr><td colspan="8" class="text-center">Loading policies...</td></tr>
+                                <tr><td colspan="8" class="text-center">Loading configured policies...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </section>
 
-            <!-- TAB 5: AUDIT LOGS -->
+            <!-- TAB 4: AUDIT LOG TRAIL -->
             <section id="tab-audit" class="tab-content">
                 <div class="section-card glass">
                     <div class="card-header">
-                        <h3><i class="fa-solid fa-table"></i> Complete Governance Audit Log Trail</h3>
-                        <button class="btn btn-outline" id="btn-export-csv" onclick="window.open('http://localhost:8000/audit/export/csv', '_blank')">
-                            <i class="fa-solid fa-file-csv"></i> Export CSV
-                        </button>
+                        <h3><i class="fa-solid fa-file-shield"></i> Complete Governance Audit Log Trail</h3>
+                        <button class="btn btn-outline btn-sm" id="btn-export-csv"><i class="fa-solid fa-download"></i> Export CSV</button>
                     </div>
                     <div class="table-responsive">
                         <table class="data-table">
@@ -398,126 +341,38 @@
                 </div>
             </section>
 
-            <!-- TAB 6: COSTS & TOKEN ANALYTICS -->
+            <!-- TAB 5: TOKEN & COST ANALYTICS -->
             <section id="tab-costs" class="tab-content">
-                <div class="kpi-grid">
+                <div class="kpi-grid margin-bottom">
                     <div class="kpi-card glass">
-                        <span>TOTAL TOKENS CONSUMED</span>
-                        <div class="kpi-value" id="cost-total-tokens">0</div>
+                        <div class="kpi-header">TOTAL TOKENS CONSUMED</div>
+                        <div class="kpi-value text-accent" id="cost-total-tokens">0</div>
                     </div>
                     <div class="kpi-card glass">
-                        <span>ESTIMATED LLM COST</span>
-                        <div class="kpi-value text-success" id="cost-total-usd">$0.00</div>
+                        <div class="kpi-header">TOTAL ESTIMATED COST (USD)</div>
+                        <div class="kpi-value text-success" id="cost-total-usd">$0.0000</div>
                     </div>
                 </div>
 
-                <div class="section-card glass margin-top">
-                    <h3><i class="fa-solid fa-layer-group"></i> Provider Token Consumption</h3>
+                <div class="section-card glass">
+                    <h3><i class="fa-solid fa-chart-pie"></i> Provider Cost Breakdown</h3>
                     <div class="table-responsive">
                         <table class="data-table">
                             <thead>
                                 <tr>
                                     <th>PROVIDER</th>
                                     <th>TOTAL TOKENS</th>
-                                    <th>ESTIMATED COST (USD)</th>
+                                    <th>COST (USD)</th>
                                 </tr>
                             </thead>
                             <tbody id="provider-costs-body">
-                                <tr><td colspan="3" class="text-center">Loading provider token costs...</td></tr>
+                                <tr><td colspan="3" class="text-center">Loading cost breakdown...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </section>
         </main>
-    </div>
-
-    <!-- Notification Dropdown Panel -->
-    <div class="notification-dropdown" id="notification-dropdown">
-        <div class="notif-header">
-            <span><i class="fa-solid fa-bell"></i> System Notifications</span>
-            <span class="pill pill-pending" style="font-size:0.65rem;">LIVE ALERTS</span>
-        </div>
-        <div class="notif-list" id="notif-list-container">
-            <div class="notif-item">
-                <div class="notif-title"><i class="fa-solid fa-triangle-exclamation text-danger"></i> High-Risk Action Blocked</div>
-                <div class="notif-desc">Action 'delete_database' triggered policy rule 'Block Database Purge Operations'.</div>
-                <div class="notif-time">2 mins ago</div>
-            </div>
-            <div class="notif-item">
-                <div class="notif-title"><i class="fa-solid fa-user-clock text-warning"></i> Manager Approval Required</div>
-                <div class="notif-desc">External email dispatch created approval request #12.</div>
-                <div class="notif-time">15 mins ago</div>
-            </div>
-            <div class="notif-item">
-                <div class="notif-title"><i class="fa-solid fa-shield-halved text-accent"></i> Prompt Security Alert</div>
-                <div class="notif-desc">Detected API Key leakage (AWS secret) in agent prompt payload.</div>
-                <div class="notif-time">1 hour ago</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Add New Policy -->
-    <div class="modal-overlay" id="modal-new-policy">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3><i class="fa-solid fa-plus-circle text-accent"></i> Create Enterprise Policy Rule</h3>
-                <button class="modal-close-btn" id="modal-policy-close" onclick="closeNewPolicyModal()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <form id="form-new-policy">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>POLICY NAME</label>
-                        <input type="text" id="pol-name" class="form-control" placeholder="e.g. Block Large Export Queries" required>
-                    </div>
-                    <div class="form-group">
-                        <label>ACTION MATCH</label>
-                        <input type="text" id="pol-action" class="form-control" placeholder="e.g. delete_records, send_email, export_data" required>
-                    </div>
-                    <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
-                        <div class="form-group">
-                            <label>CONDITION TYPE</label>
-                            <select id="pol-condition-type" class="form-control">
-                                <option value="record_count_gt">Record Count Greater Than (gt)</option>
-                                <option value="external">External Domain Target (boolean)</option>
-                                <option value="classification">Data Classification Equals</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>CONDITION VALUE</label>
-                            <input type="text" id="pol-condition-value" class="form-control" placeholder="e.g. 100 or true" required>
-                        </div>
-                    </div>
-                    <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
-                        <div class="form-group">
-                            <label>ENFORCEMENT DECISION</label>
-                            <select id="pol-decision" class="form-control">
-                                <option value="block">BLOCK</option>
-                                <option value="require_approval">REQUIRE APPROVAL (HITL)</option>
-                                <option value="allow">ALLOW</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>SEVERITY</label>
-                            <select id="pol-severity" class="form-control">
-                                <option value="HIGH">HIGH</option>
-                                <option value="CRITICAL">CRITICAL</option>
-                                <option value="MEDIUM">MEDIUM</option>
-                                <option value="LOW">LOW</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group" style="display:flex; align-items:center; gap:0.5rem; margin-top:0.25rem;">
-                        <input type="checkbox" id="pol-approval-check" style="accent-color:var(--accent-blue);">
-                        <label for="pol-approval-check" style="margin-bottom:0; cursor:pointer;">Requires Manager Approval Workflow</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline" id="btn-modal-cancel" onclick="closeNewPolicyModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save Policy Rule</button>
-                </div>
-            </form>
-        </div>
     </div>
 
     <script src="app.js"></script>
