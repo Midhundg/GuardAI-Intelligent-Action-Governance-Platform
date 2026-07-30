@@ -10,7 +10,7 @@
 
 ---
 
-## 🏆 Hackathon Problem Statement: Production-Ready AI Governance
+## 🏆 Problem Statement: Production-Ready AI Governance
 
 ### 1. Context
 As AI agents gain autonomy to interact with enterprise databases, APIs, and file systems, the risk of destructive actions (e.g., dropping production databases, leaking confidential files) increases exponentially. Current security tools are passive and fail to intercept AI payload intent *before* execution.
