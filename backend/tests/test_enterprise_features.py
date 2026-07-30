@@ -24,7 +24,7 @@ def test_policy_explainability():
     engine = PolicyEngine()
     result = engine.evaluate({
         "action": "delete_database",
-        "record_count": 100,
+        "record_count": 150,
         "external": False,
         "classification": "public"
     })

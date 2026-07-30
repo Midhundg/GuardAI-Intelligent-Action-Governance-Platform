@@ -47,9 +47,18 @@ class PolicyEngine:
                 trace.add(f"Checking Policy #{policy.id}: {policy.name}")
 
                 # -----------------------------
-                # Match Action
+                # Match Action (Supports Synonyms)
                 # -----------------------------
-                if action_data.get("action") != policy.action:
+                req_action = str(action_data.get("action", "")).lower()
+                pol_action = str(policy.action).lower()
+
+                action_matched = (
+                    req_action == pol_action
+                    or (pol_action in ("delete_records", "delete_database") and req_action in ("delete_records", "delete_database"))
+                    or (pol_action in ("read_file", "read_path") and req_action in ("read_file", "read_path"))
+                )
+
+                if not action_matched:
                     trace.add("Action does not match.")
                     continue
 
@@ -62,21 +71,23 @@ class PolicyEngine:
                 if policy.condition_type == "record_count_gt":
                     threshold = int(policy.condition_value)
                     trace.add(f"Evaluating record_count > {threshold}")
-                    matched = action_data.get("record_count", 0) > threshold
+                    matched = int(action_data.get("record_count", 0)) > threshold
 
                 # -----------------------------
                 # External Access Condition
                 # -----------------------------
                 elif policy.condition_type == "external":
                     trace.add("Evaluating external access.")
-                    matched = action_data.get("external", False) is True
+                    matched = bool(action_data.get("external", False)) is True
 
                 # -----------------------------
                 # Classification Condition
                 # -----------------------------
                 elif policy.condition_type == "classification":
                     trace.add("Evaluating classification.")
-                    matched = action_data.get("classification") == policy.condition_value
+                    req_class = str(action_data.get("classification", "")).lower()
+                    prompt_text = str(action_data.get("prompt", "")).lower()
+                    matched = (req_class == policy.condition_value.lower()) or (policy.condition_value.lower() in prompt_text)
 
                 # -----------------------------
                 # Policy Matched
