@@ -35,6 +35,13 @@ from app.routes.metrics import router as metrics_router
 # Initialize Database tables
 Base.metadata.create_all(bind=engine)
 
+# Auto-seed the database with default users on startup
+try:
+    from seed import seed_database
+    seed_database()
+except Exception as e:
+    print(f"Auto-seed skipped: {e}")
+
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
