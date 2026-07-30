@@ -2,7 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // ----------------------------------------------------
     // State & API base
     // ----------------------------------------------------
-    const API_BASE = (window.location.port === "8000" || window.location.port === "") ? "" : "http://localhost:8000";
+    const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
+        ? "http://localhost:8000" 
+        : "https://guardai-backend-production.onrender.com";
     let authToken = null;
     let riskChart = null;
     let violationChart = null;
