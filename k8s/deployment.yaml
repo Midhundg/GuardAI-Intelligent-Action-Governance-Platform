@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guardai-enterprise
+  labels:
+    app: guardai-enterprise
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: guardai-enterprise
+  template:
+    metadata:
+      labels:
+        app: guardai-enterprise
+    spec:
+      containers:
+      - name: guardai-api
+        image: guardai-enterprise:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: guardai-config
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        resources:
+          limits:
+            cpu: "1"
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: guardai-service
+spec:
+  type: ClusterIP
+  selector:
+    app: guardai-enterprise
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: guardai-config
+data:
+  APP_NAME: "GuardAI Enterprise"
+  ENVIRONMENT: "production"
+  LOG_LEVEL: "INFO"

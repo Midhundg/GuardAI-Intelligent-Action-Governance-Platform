@@ -1,7 +1,11 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.dependencies import get_db
+from app.dependencies import (
+    get_db,
+    require_roles,
+)
+from app.models.user import User
 from app.services.recommendation_engine import RecommendationEngine
 
 router = APIRouter(
@@ -11,5 +15,10 @@ router = APIRouter(
 
 
 @router.get("/")
-def get_recommendations(db: Session = Depends(get_db)):
+def get_recommendations(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        require_roles("ADMIN", "MANAGER")
+    ),
+):
     return RecommendationEngine.generate(db)

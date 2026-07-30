@@ -2,32 +2,33 @@
   "rules": [
     {
       "id": 1,
-      "name": "Bulk Delete Protection",
-      "action": "delete_database",
+      "name": "Bulk Record Delete Protection",
+      "action": "delete_records",
       "condition": {
         "record_count_gt": 100
       },
       "decision": "block",
-      "reason": "Bulk delete exceeds company policy."
+      "reason": "Bulk record delete exceeds 100 limit policy."
     },
     {
       "id": 2,
-      "name": "External Email Approval",
+      "name": "External Email HITL Signoff",
       "action": "send_email",
       "condition": {
         "external": true
       },
-      "decision": "human_review",
-      "reason": "External emails require manager approval."
+      "decision": "require_hitl",
+      "reason": "External emails require human-in-the-loop review."
     },
     {
       "id": 3,
-      "name": "Confidential File Access",
+      "name": "Confidential File Access Log & Allow",
       "action": "read_file",
       "condition": {
         "classification": "confidential"
       },
-      "decision": "allow_log"
+      "decision": "log_and_allow",
+      "reason": "Read of confidential path logged and allowed."
     }
   ]
 }
