@@ -1,6 +1,16 @@
 version: '3.8'
 
 services:
+  web:
+    image: nginx:alpine
+    container_name: guardai_frontend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - app
+
   app:
     build:
       context: ./backend
