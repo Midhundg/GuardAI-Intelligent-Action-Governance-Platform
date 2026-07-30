@@ -11,6 +11,19 @@ class RiskEngine:
         record_count = action_data.get("record_count", 0)
         is_external = action_data.get("external", False)
         classification = str(action_data.get("classification", "")).lower()
+        prompt_text = str(action_data.get("prompt", "")).lower()
+
+        # Auto-classify sensitivity if classification is 'auto' or unassigned
+        if not classification or classification in ("auto", "none", "unknown"):
+            sensitive_keywords = ["id_rsa", ".env", "passwd", "shadow", "secret", "credentials", "token", "ssn", "api_key", "confidential", "private", "credit_card", "config.json"]
+            if any(k in prompt_text for k in sensitive_keywords) or (action_name in ("read_file", "export_records") and any(k in prompt_text for k in sensitive_keywords)):
+                classification = "confidential"
+                explanation.append("AI Security Scanner auto-classified payload as CONFIDENTIAL based on file & prompt inspection.")
+            elif record_count > 100 or action_name in ("delete_database", "deploy_prod"):
+                classification = "restricted"
+                explanation.append("AI Risk Engine auto-classified payload as RESTRICTED due to high blast radius.")
+            else:
+                classification = "public"
 
         # -----------------------------
         # 1. Action Risk Factor
