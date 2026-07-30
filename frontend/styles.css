@@ -3,13 +3,13 @@
    ========================================================================== */
 
 :root {
-    /* Color Palette */
-    --bg-dark: #070a12;
+    /* Google Palette Tokens */
+    --bg-dark: #090d16;
     --bg-surface: #0f172a;
     --bg-card: rgba(15, 23, 42, 0.75);
     --bg-card-hover: rgba(30, 41, 59, 0.85);
     --border-color: rgba(255, 255, 255, 0.08);
-    --border-glow: rgba(56, 189, 248, 0.35);
+    --border-glow: rgba(56, 189, 248, 0.25);
     
     /* Brand Accents */
     --accent-blue: #0284c7;
@@ -27,8 +27,8 @@
     --text-muted: #94a3b8;
     --text-dim: #64748b;
 
-    --font-heading: 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif;
-    --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+    --font-heading: 'Outfit', 'Inter', -apple-system, sans-serif;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
     
     --radius-sm: 8px;
@@ -37,9 +37,9 @@
     --radius-pill: 9999px;
     
     --shadow-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
-    --shadow-glow-blue: 0 0 25px -5px rgba(56, 189, 248, 0.35);
-    --shadow-glow-emerald: 0 0 25px -5px rgba(16, 185, 129, 0.35);
-    --shadow-glow-rose: 0 0 25px -5px rgba(244, 63, 94, 0.35);
+    --shadow-glow-blue: 0 0 25px -5px rgba(56, 189, 248, 0.3);
+    --shadow-glow-emerald: 0 0 25px -5px rgba(16, 185, 129, 0.3);
+    --shadow-glow-rose: 0 0 25px -5px rgba(244, 63, 94, 0.3);
 }
 
 /* Reset & Global */
@@ -67,9 +67,9 @@
 body {
     background-color: var(--bg-dark);
     background-image: 
-        radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.12) 0px, transparent 50%),
-        radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(2, 132, 199, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.06) 0px, transparent 50%);
     background-attachment: fixed;
     color: var(--text-main);
     font-family: var(--font-sans);
