@@ -1,0 +1,33 @@
+{
+  "rules": [
+    {
+      "id": 1,
+      "name": "Bulk Delete Protection",
+      "action": "delete_database",
+      "condition": {
+        "record_count_gt": 100
+      },
+      "decision": "block",
+      "reason": "Bulk delete exceeds company policy."
+    },
+    {
+      "id": 2,
+      "name": "External Email Approval",
+      "action": "send_email",
+      "condition": {
+        "external": true
+      },
+      "decision": "human_review",
+      "reason": "External emails require manager approval."
+    },
+    {
+      "id": 3,
+      "name": "Confidential File Access",
+      "action": "read_file",
+      "condition": {
+        "classification": "confidential"
+      },
+      "decision": "allow_log"
+    }
+  ]
+}

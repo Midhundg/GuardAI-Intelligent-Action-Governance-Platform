@@ -1,0 +1,13 @@
+[
+    {
+        "timestamp": "2026-07-30T00:21:23.613794",
+        "request": {
+            "action": "delete_database",
+            "record_count": 500
+        },
+        "decision": {
+            "decision": "block",
+            "reason": "Bulk delete exceeds company policy."
+        }
+    }
+]
