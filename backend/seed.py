@@ -102,6 +102,10 @@ def seed_database():
 
         db.flush()
 
+        # REMOVE ANY EXTRANEOUS POLICIES THAT MIGHT BE LEFTOVER IN A PERSISTENT DB
+        db.query(Policy).filter(Policy.action.notin_(["delete_database", "read_file", "send_email"])).delete(synchronize_session=False)
+        db.flush()
+
         # 3. Seed Sample Approvals
         dev_user = created_users.get("dev_alex")
         mgr_user = created_users.get("manager_jane")
