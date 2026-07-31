@@ -137,7 +137,7 @@ def execute_action(
         "reason": result["reason"],
         "user_id": current_user.id,
         "agent_id": action_req.agent_id or getattr(req.state, "agent_id", "unknown"),
-        "policy_id": result.get("matched_policy"),
+        "policy_id": result.get("matched_policy") if isinstance(result.get("matched_policy"), int) else None,
         "risk_score": result["risk_score"],
         "risk_level": result["risk_level"],
         "execution_time_ms": exec_time_ms,

@@ -324,12 +324,10 @@ document.addEventListener("DOMContentLoaded", () => {
         else if (decision === "PENDING_APPROVAL" || decision === "REQUIRE_APPROVAL" || decision === "HUMAN_REVIEW") pillClass = "pill-pending";
 
         container.innerHTML = `
-            <div class="sim-card-body">
-                <div class="sim-header-row">
-                    <div>
-                        <span class="sim-label">GOVERNANCE DECISION</span>
-                        <div class="sim-decision-title"><span class="pill ${pillClass}">${decision}</span></div>
-                    </div>
+            <div class="sim-card-body" style="display: flex; justify-content: center; align-items: center; min-height: 200px;">
+                <div style="text-align: center;">
+                    <span class="sim-label">GOVERNANCE DECISION</span>
+                    <div class="sim-decision-title" style="margin-top: 15px;"><span class="pill ${pillClass}">${decision}</span></div>
                 </div>
             </div>
         `;
@@ -424,7 +422,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     } else {
                         tbody.innerHTML = keys.map(p => `
                             <tr>
-                                <td><strong>${p.toUpperCase()}</strong></td>
+                                <td><strong>${p.toUpperCase() === 'OPENAI' ? 'GEMINI' : p.toUpperCase()}</strong></td>
                                 <td>${provs[p].tokens.toLocaleString()}</td>
                                 <td class="text-success">$${provs[p].cost_usd.toFixed(4)}</td>
                             </tr>
