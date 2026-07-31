@@ -2,9 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // ----------------------------------------------------
     // State & API base
     // ----------------------------------------------------
+    // Dynamic API URL for localhost, Vercel, or EC2
     const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
         ? "http://localhost:8000"
-        : "https://guardai-backend-m4q5.onrender.com";
+        : window.location.hostname.includes("vercel.app") 
+            ? "https://guardai-backend-m4q5.onrender.com"
+            : `http://${window.location.hostname}:8000`;
     let authToken = null;
     let riskChart = null;
     let violationChart = null;
