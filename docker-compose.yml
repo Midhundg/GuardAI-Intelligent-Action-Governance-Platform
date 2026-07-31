@@ -18,6 +18,8 @@ services:
     container_name: guardai_app
     ports:
       - "8000:8000"
+    volumes:
+      - ./backend:/app:ro
     environment:
       - APP_NAME=GuardAI Enterprise
       - ENVIRONMENT=production
@@ -43,6 +45,8 @@ services:
       dockerfile: Dockerfile
     container_name: guardai_celery_worker
     command: celery -A app.tasks.celery_app worker --loglevel=info
+    volumes:
+      - ./backend:/app:ro
     environment:
       - DATABASE_URL=postgresql://guardai_user:guardai_password@postgres:5432/guardai_db
       - REDIS_URL=redis://redis:6379/0
