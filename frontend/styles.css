@@ -737,3 +737,10 @@ select.form-input option {
     color: #f59e0b;
     border: 1px solid rgba(245, 158, 11, 0.2);
 }
+
+/* Make only the simulation result decision pill larger */
+.sim-decision-title .pill {
+    font-size: 1.5rem;
+    padding: 0.6rem 2.5rem;
+    letter-spacing: 1.5px;
+}
