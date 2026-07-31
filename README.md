@@ -36,11 +36,12 @@ We need a real-time, high-performance Action Governance Platform that intercepts
 
 GuardAI is fully deployed in a production-grade cloud environment:
 
-- **Frontend (UI):** Hosted on **Vercel** via Global Edge CDN.
-- **Backend (API):** Hosted on **Render** (FastAPI / Python 3.11).
-- **Database:** Hosted on **Neon Serverless PostgreSQL**.
+- **Architecture:** Fully containerized microservices via **Docker Compose**.
+- **Frontend (UI):** Served via **NGINX**.
+- **Backend (API):** Hosted on an **AWS EC2 Production Server** (FastAPI / Python 3.12).
+- **Database:** **PostgreSQL** & **Redis** for Celery Task Queues.
 
-*(Note: The live URLs are provided in the project submission form. The backend database automatically self-seeds default users and policies on startup).*
+*(Note: The live production dashboard is available at: [http://51.21.171.205:3000](http://51.21.171.205:3000). The backend database automatically self-seeds default users and policies on startup).*
 
 ---
 
