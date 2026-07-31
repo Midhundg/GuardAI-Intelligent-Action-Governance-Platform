@@ -702,3 +702,38 @@ select.form-input option {
 
 .text-accent { color: var(--accent-primary); }
 .text-success { color: var(--accent-success); }
+
+/* Custom Pill Styles for Decisions */
+.pill {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.pill-allow, .pill-ALLOW, .pill-allow {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981; /* Green */
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.pill-block, .pill-BLOCK, .pill-BLOCKED, .pill-blocked {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444; /* Red */
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.pill-hitl, .pill-REQUIRE_HITL, .pill-require_hitl {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b; /* Yellow */
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.pill-pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}

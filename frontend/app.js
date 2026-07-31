@@ -322,6 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let pillClass = "pill-allow";
         if (decision === "BLOCKED" || decision === "BLOCK") pillClass = "pill-block";
         else if (decision === "PENDING_APPROVAL" || decision === "REQUIRE_APPROVAL" || decision === "HUMAN_REVIEW") pillClass = "pill-pending";
+        else if (decision === "REQUIRE_HITL" || decision === "require_hitl") pillClass = "pill-hitl";
 
         container.innerHTML = `
             <div class="sim-card-body" style="display: flex; justify-content: center; align-items: center; min-height: 200px;">
