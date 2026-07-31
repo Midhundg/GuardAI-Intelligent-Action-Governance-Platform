@@ -101,40 +101,44 @@ def execute_action(
     status = "COMPLETED"
     message = None
 
-    if result.get("decision") == "block":
-        status = "BLOCKED"
-        message = f"Action blocked by policy rule: {result.get('reason')}"
-        POLICY_VIOLATION_COUNTER.labels(
-            policy_id=str(result.get("matched_policy") or "0"),
-            action=action_req.action,
-            severity=result["risk_level"],
-        ).inc()
-    elif result.get("decision") == "require_hitl":
-        approval = ApprovalRequest(
-            request_id=request_id,
-            action=action_req.action,
-            requested_by=current_user.id,
-            status="PENDING",
-            expires_at=datetime.now(timezone.utc) + timedelta(hours=24),
-        )
-        db.add(approval)
-        db.flush()
-        approval_request_id = approval.id
-        status = "PENDING_APPROVAL"
-        message = "High-risk action requires manager approval."
-        APPROVAL_COUNTER.labels(status="PENDING").inc()
+    if action_req.dry_run:
+        status = "DRY_RUN"
+        message = f"Dry Run Mode: Action simulated successfully. Policy would have decided: {result.get('decision').upper()}"
+        # Do not create approval requests or increment violation counters for dry runs
+    else:
+        if result.get("decision") == "block":
+            status = "BLOCKED"
+            message = f"Action blocked by policy rule: {result.get('reason')}"
+            POLICY_VIOLATION_COUNTER.labels(
+                policy_id=str(result.get("matched_policy") or "0"),
+                action=action_req.action,
+                severity=result["risk_level"],
+            ).inc()
+        elif result.get("decision") == "require_hitl":
+            approval = ApprovalRequest(
+                request_id=request_id,
+                action=action_req.action,
+                requested_by=current_user.id,
+                status="PENDING",
+                expires_at=datetime.now(timezone.utc) + timedelta(hours=24),
+            )
+            db.add(approval)
+            db.flush()
+            approval_request_id = approval.id
+            status = "PENDING_APPROVAL"
+            message = "High-risk action requires manager approval."
+            APPROVAL_COUNTER.labels(status="PENDING").inc()
 
     exec_time_ms = round((time.perf_counter() - start_time) * 1000, 2)
 
-    # 6. Audit Logging
     audit_data = {
         "request_id": request_id,
         "correlation_id": correlation_id,
         "timestamp": datetime.now(timezone.utc).isoformat(),
-        "action": action_req.action,
+        "action": f"{action_req.action} (Dry Run)" if getattr(action_req, "dry_run", False) else action_req.action,
         "request": f"{current_user.username}: {action_req.model_dump()}",
         "decision": result["decision"],
-        "reason": result["reason"],
+        "reason": f"[DRY RUN] {result['reason']}" if getattr(action_req, "dry_run", False) else result["reason"],
         "user_id": current_user.id,
         "agent_id": action_req.agent_id or getattr(req.state, "agent_id", "unknown"),
         "policy_id": result.get("matched_policy") if isinstance(result.get("matched_policy"), int) else None,

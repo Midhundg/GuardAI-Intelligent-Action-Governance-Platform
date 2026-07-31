@@ -7,27 +7,27 @@ description: >
 rules:
   - id: "yaml-001"
     name: "Bulk Database Delete Block"
-    description: "Block any database delete where record count is 500 or more."
+    description: "Block any database delete where record count exceeds 100."
     action: delete_database
     condition:
       type: record_count_gt
-      value: 499
+      value: 100
     decision: block
 
   - id: "yaml-002"
-    name: "External Email Block"
-    description: "Block any email sent to a domain other than company.com."
+    name: "External Email Requires Approval"
+    description: "Require HITL for any email sent to an external domain."
     action: send_email
     condition:
       type: email_domain_not_contains
       value: "company.com"
-    decision: block
+    decision: require_hitl
 
   - id: "yaml-003"
-    name: "Confidential File Read Requires Approval"
-    description: "Require HITL for any read of a path containing the word confidential."
+    name: "Confidential File Read Log"
+    description: "Log and allow any read of a path containing the word confidential."
     action: read_file
     condition:
       type: path_contains
       value: confidential
-    decision: require_hitl
+    decision: log_and_allow

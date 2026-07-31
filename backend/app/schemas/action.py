@@ -12,6 +12,7 @@ class ActionRequest(BaseModel):
     path: Optional[str] = Field(default=None, json_schema_extra={"example": "/var/log/syslog"})
     agent_id: Optional[str] = Field(default="coding_agent", json_schema_extra={"example": "devops_agent"})
     model_name: Optional[str] = Field(default="gpt-4o-mini", json_schema_extra={"example": "gpt-4o-mini"})
+    dry_run: bool = Field(default=False, description="Simulate execution without blocking or side-effects")
 
 
 class PolicyDecision(BaseModel):

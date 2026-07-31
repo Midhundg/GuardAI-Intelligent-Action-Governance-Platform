@@ -291,7 +291,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         external: payload.external,
                         email_id: payload.email_id,
                         path: payload.path,
-                        agent_id: "simulation_agent"
+                        agent_id: "simulation_agent",
+                        dry_run: document.getElementById("sim-dry-run")?.checked || false
                     })
                 });
 
@@ -318,6 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const reason = result.reason || "Action evaluated successfully.";
         const alternative = result.suggested_alternative || "No alternative needed.";
         const aiExplain = result.ai_explanation ? result.ai_explanation.why_decision_was_made : null;
+        const isDryRun = data.status === "DRY_RUN";
 
         let pillClass = "pill-allow";
         if (decision === "BLOCKED" || decision === "BLOCK") pillClass = "pill-block";
@@ -327,8 +329,13 @@ document.addEventListener("DOMContentLoaded", () => {
         container.innerHTML = `
             <div class="sim-card-body" style="display: flex; justify-content: center; align-items: center; min-height: 200px;">
                 <div style="text-align: center;">
-                    <span class="sim-label">GOVERNANCE DECISION</span>
-                    <div class="sim-decision-title" style="margin-top: 15px;"><span class="pill ${pillClass}">${decision}</span></div>
+                    <span class="sim-label">${isDryRun ? 'DRY RUN EVALUATION' : 'GOVERNANCE DECISION'}</span>
+                    <div class="sim-decision-title" style="margin-top: 15px;">
+                        <span class="pill ${pillClass}" style="${isDryRun ? 'opacity: 0.7; border: 2px dashed #888;' : ''}">
+                            ${isDryRun ? '[WOULD] ' : ''}${decision}
+                        </span>
+                    </div>
+                    ${isDryRun ? '<div style="margin-top: 10px; color: var(--accent-sky); font-size: 0.85rem;"><i class="fa-solid fa-ghost"></i> Shadow Mode: Execution simulated without side-effects.</div>' : ''}
                 </div>
             </div>
         `;
