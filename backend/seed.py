@@ -51,16 +51,6 @@ def seed_database():
         # 2. Enterprise Policies
         policies_data = [
             {
-                "name": "Bulk Record Delete Protection",
-                "description": "Blocks deletion of over 100 records.",
-                "action": "delete_records",
-                "condition_type": "record_count_gt",
-                "condition_value": "100",
-                "decision": "block",
-                "severity": "HIGH",
-                "requires_approval": True,
-            },
-            {
                 "name": "External Email HITL Signoff",
                 "description": "Pauses emails sent to external domains for human approval.",
                 "action": "send_email",
@@ -81,26 +71,6 @@ def seed_database():
                 "requires_approval": True,
             },
             {
-                "name": "Bulk Data Export Threshold Guard",
-                "description": "Flags data retrieval requests returning over 100 confidential customer records.",
-                "action": "export_records",
-                "condition_type": "record_count_gt",
-                "condition_value": "100",
-                "decision": "block",
-                "severity": "HIGH",
-                "requires_approval": True,
-            },
-            {
-                "name": "External Endpoint Access Lockdown",
-                "description": "Blocks AI network calls connecting directly to external internet domains without proxy approval.",
-                "action": "api_request",
-                "condition_type": "external",
-                "condition_value": "true",
-                "decision": "block",
-                "severity": "MEDIUM",
-                "requires_approval": True,
-            },
-            {
                 "name": "Confidential Classification Protection",
                 "description": "Requires explicit manager signoff when accessing confidential internal files.",
                 "action": "read_file",
@@ -108,16 +78,6 @@ def seed_database():
                 "condition_value": "confidential",
                 "decision": "block",
                 "severity": "HIGH",
-                "requires_approval": True,
-            },
-            {
-                "name": "Production Deployment Guard",
-                "description": "Prevents unauthorized production deployment after standard business hours.",
-                "action": "deploy_prod",
-                "condition_type": "record_count_gt",
-                "condition_value": "0",
-                "decision": "block",
-                "severity": "CRITICAL",
                 "requires_approval": True,
             },
         ]
